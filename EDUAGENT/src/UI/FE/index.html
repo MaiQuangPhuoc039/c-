@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Chatbot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">🤖 Chat với hệ thống</div>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="input-box">
+      <input type="text" id="user-input" placeholder="Nhập tin nhắn..." autocomplete="off" />
+      <button id="send-btn">Gửi</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
+
+    async function sendMessage(message) {
+      // Hiển thị tin người dùng
+      const userMsg = document.createElement("div");
+      userMsg.className = "user-msg";
+      userMsg.innerText = "🧑 Bạn: " + message;
+      chatBox.appendChild(userMsg);
+
+      // Gửi đến API
+      const response = await fetch("http://localhost:8000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+
+      
+        // Hiển thị phản hồi hệ thống
+      const data = await response.json();
+    
+      const botMsg = document.createElement("div");
+      botMsg.className = "bot-msg";
+      botMsg.innerText = "🤖 Hệ thống: " + data.reply;
+      chatBox.appendChild(botMsg);
+
+      chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll
+      input.value = "";
+    }
+
+    function handleSend() {
+      const message = userInput.value.trim();
+      if (message !== "") {
+        sendMessage(message);
+        userInput.value = "";
+      }
+    }
+
+    userInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleSend();
+      }
+    });
+
+    sendBtn.addEventListener("click", handleSend);
+
+   
+
+    // userInput.addEventListener("keydown", (e) => {
+    //   if (e.key === "Enter" && userInput.value.trim() !== "") {
+    //     const message = userInput.value.trim();
+    //     userInput.value = "";
+    //     sendMessage(message);
+    //   }
+    // });
+  </script>
+</body>
+</html>
