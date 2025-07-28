@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 import time
 from datetime import datetime
-# from src.agents.detail_planner import DetailPlanner
+from src.agents.detail_planner import DetailPlanner
 from src.agents.profile_collector import ProfileCollector
 from src.agents.overview_planner import OverViewPlanner
 
@@ -36,12 +36,12 @@ def build_graph():
     # Initialize agents
     profile_collector = ProfileCollector(llm_client=llm_client)
     overview_planner = OverViewPlanner(llm_client=llm_client)
-    # detail_planner = DetailPlanner(llm_client=llm_client)
+    detail_planner = DetailPlanner(llm_client=llm_client)
 
     # Add nodes
     graph.add_node("profile_collector", profile_collector)
     graph.add_node("overview_planner", overview_planner)
-    # graph.add_node("detail_planner", detail_planner)
+    graph.add_node("detail_planner", detail_planner)
     graph.add_node("process_overview_output", process_overview_output)
 
     # Set up edges
@@ -53,10 +53,10 @@ def build_graph():
         run_overview_planner,
         {END: END, "overview_planner": "overview_planner"},
     )
-    # graph.add_edge("overview_planner", "process_overview_output")
-    # graph.add_edge("process_overview_output", "detail_planner")
-    # graph.add_edge("detail_planner", END)
-    graph.add_edge("overview_planner", END)
+    graph.add_edge("overview_planner", "process_overview_output")
+    graph.add_edge("process_overview_output", "detail_planner")
+    graph.add_edge("detail_planner", END)
+    # graph.add_edge("overview_planner", END)
 
 
     compiled_graph = graph.compile()
