@@ -120,12 +120,6 @@ class ProfileCollector:
                         break
                 tool_messages = recent_tool_messages[::-1]
                 last_tool_msg = tool_messages[-1]  
-                # print('gen=====================',state)
-                # print('2' , last_tool_msg)
-                print('------------------------' )
-                print('3' , last_tool_msg.artifact)
-             
-
 
                 return {"profile_user": last_tool_msg.artifact, "messages": "hoàn thành việc thu thập hồ sơ học tập."}
 
